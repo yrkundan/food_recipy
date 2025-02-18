@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/account.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/template.css') }}" />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/header.css') }}" />
+  <title>{{ username }}, Account</title>
+  {% block csp_nonce %}
+  <meta http-equiv="Content-Security-Policy" content="script-src 'nonce-{{ nonce }}';">
+  {% endblock %}
+</head>
+
+<body>
+
+  <header>
+    <div class="button-container">
+      <a class="button" href="/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 1024 1024" stroke-width="0"
+          fill="currentColor" stroke="currentColor" class="icon">
+          <path
+            d="M946.5 505L560.1 118.8l-25.9-25.9a31.5 31.5 0 0 0-44.4 0L77.5 505a63.9 63.9 0 0 0-18.8 46c.4 35.2 29.7 63.3 64.9 63.3h42.5V940h691.8V614.3h43.4c17.1 0 33.2-6.7 45.3-18.8a63.6 63.6 0 0 0 18.7-45.3c0-17-6.7-33.1-18.8-45.2zM568 868H456V664h112v204zm217.9-325.7V868H632V640c0-22.1-17.9-40-40-40H432c-22.1 0-40 17.9-40 40v228H238.1V542.3h-96l370-369.7 23.1 23.1L882 542.3h-96.1z">
+          </path>
+        </svg>
+      </a>
+
+      <a class="button" href="/admin/dashboard">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="0"
+          fill="currentColor" stroke="currentColor" class="icon">
+          <path
+            d="M12 2.5a5.5 5.5 0 0 1 3.096 10.047 9.005 9.005 0 0 1 5.9 8.181.75.75 0 1 1-1.499.044 7.5 7.5 0 0 0-14.993 0 .75.75 0 0 1-1.5-.045 9.005 9.005 0 0 1 5.9-8.18A5.5 5.5 0 0 1 12 2.5ZM8 8a4 4 0 1 0 8 0 4 4 0 0 0-8 0Z">
+          </path>
+        </svg>
+      </a>
+
+      <!-- Cart -->
+      <a class="button" href="/logout">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 256" id="sign-out">
+          <rect width="256" height="256" fill="none"></rect>
+          <polyline fill="none" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="15"
+            points="174.011 86 216 128 174.011 170"></polyline>
+          <line x1="104" x2="215.971" y1="128" y2="128" fill="none" stroke="#FFF" stroke-linecap="round"
+            stroke-linejoin="round" stroke-width="15"></line>
+          <path fill="none" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="15"
+            d="M104,216H48a8,8,0,0,1-8-8V48a8,8,0,0,1,8-8h56"></path>
+        </svg>
+      </a>
+    </div>
+
+  </header>
+  <input type="hidden" id="likedMealsData" value='{{ liked_meal_ids|tojson|safe }}'>
+
+  <div class="user-data">
+    <span>Account of , {{ username }} !</span>
+  </div>
+
+  <h2>Login Details</h2>
+  <div>
+    <p><b>ID : </b>{{ loginDetails.id }} <br></p>
+    <p><b>USERNAME : </b>{{ loginDetails.username }} <br></p>
+    <p><b>PASSWORD : </b>{{ loginDetails.password }} <br></p>
+    <p><b>Regestration IP : </b>{{ loginDetails.ip }} <br></p>
+  </div>
+
+
+  <h2>User Data</h2>
+  <div>
+    <p><b>ID : </b>{{ userData.id }}<br></p>
+    <p><b>IP : </b>{{ userData.ip }}<br></p>
+    <p><b>COUNTRY : </b>{{ userData.country }}<br></p>
+    <p><b>REGION NAME : </b>{{ userData.regionname }}<br></p>
+    <p><b>CITY : </b>{{ userData.city }}<br></p>
+    <p><b>ZIP : </b>{{ userData.zip }}<br></p>
+    <p><b>TIMEZONE : </b>{{ userData.timezone }}<br></p>
+    <p><b>ISP : </b>{{ userData.isp }}<br></p>
+    <p><b>LAT , LON : </b> {{ userData.lat }}, {{ userData.lon }}<br></p>
+  </div>
+
+  <!-- onclick="resetPassword('{{ username }}')"  onclick="copyResetUrl()"-->
+  <h2>Password Reset</h2>
+  <div>
+    <button id="resetButton" nonce="{{ nonce }}"
+      style="background: gray; border: none; outline: none; padding: 10px; cursor: pointer; color: white;">Reset
+      Password</button>
+    <input type="text" id="resetUrlField" value="" readonly
+      style="background: darkgray; border: none; outline: none; padding: 10px; color: white;">
+    <button id="copyUrlButton" nonce="{{ nonce }}"
+      style="background: gray; border: none; outline: none; padding: 10px; cursor: pointer; color: white;">Copy
+      URL</button>
+  </div>
+
+  <section>
+    <div class="recipies">
+      <section class="categories grid" id="categories"></section>
+    </div>
+  </section>
+  <br>
+
+  <h2>Login Log</h2>
+  <ul>
+    {% for log in loginLog %}
+    <ul style="padding: 8px;">{{ log.timestamp }} - {{ log.ip }}</ul>
+    {% endfor %}
+  </ul>
+
+  <script nonce="{{ nonce }}">
+    document.addEventListener('DOMContentLoaded', function () {
+      const resetButton = document.getElementById('resetButton');
+      const copyUrlButton = document.getElementById('copyUrlButton');
+
+      resetButton.addEventListener('click', function () {
+        resetPassword('{{ username }}');
+      });
+
+      copyUrlButton.addEventListener('click', function () {
+        copyResetUrl();
+      });
+    });
+
+    
+    const categories = document.getElementById("categories");
+
+    // Read the likedMeals data from the hidden input field
+    const likedMealsData = document.getElementById("likedMealsData").value;
+
+    const MEAL_SEARCH_URL =
+      "https://www.themealdb.com/api/json/v1/1/lookup.php?i=";
+
+
+    // Check if likedMealsData is not empty and is valid JSON
+    let likedMeals;
+    try {
+      likedMeals = JSON.parse(likedMealsData);
+    } catch (error) {
+      console.error("Error parsing likedMealsData:", error);
+      likedMeals = []; // Default to an empty array if parsing fails
+    }
+
+
+    function get_liked_meals(url, mealIds) {
+      categories.innerHTML = ``;
+
+      mealIds.forEach((id) => {
+        fetch(url + id)
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.meals && data.meals.length > 0) {
+              const meal = data.meals[0];
+              const category = document.createElement("div");
+              category.classList.add("category");
+              category.innerHTML = `
+                <div id="${meal.idMeal}">
+                    <h1>${meal.strMeal}</h1>
+                    <img src="${meal.strMealThumb}">
+                </div>
+              `;
+              categories.appendChild(category);
+            }
+          });
+      });
+    }
+
+    // Pass the likedMeals variable to the function
+    get_liked_meals(MEAL_SEARCH_URL, likedMeals);
+
+    if (likedMeals.length === 0) {
+      const noLikedMealsMessage = document.createElement("div");
+      noLikedMealsMessage.innerHTML = 'No liked meals';
+      categories.appendChild(noLikedMealsMessage);
+    }
+
+    function resetPassword(username) {
+      // You can use AJAX to call the endpoint for resetting the password
+      // Update the reset URL field with the generated URL including the token
+      fetch('/reset-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username: username }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            var resetUrl = `http://192.168.133.80/forgot-password?token=${data.token}`;
+            document.getElementById('resetUrlField').value = resetUrl;
+          } else {
+            alert('Password reset link generation failed. ' + data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+
+    function copyResetUrl() {
+      var resetUrlField = document.getElementById('resetUrlField');
+      resetUrlField.select();
+      document.execCommand('copy');
+      alert('Reset URL copied to clipboard!');
+    }
+  </script>
+
+</body>
+
+</html>

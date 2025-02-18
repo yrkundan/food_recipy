@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Registration</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/template.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
+
+</head>
+
+<body class="centered">
+    <section class="form">
+        <form method="POST" action="/register">
+            <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token }}">
+            <div class="container">
+                <div class="card">
+                    <a class="login">Register</a>
+                    <div class="inputBox">
+                        <input name="username" type="text" required="required" autocomplete="username">
+                        <span class="user">Username</span>
+                    </div>
+                    <div class="inputBox">
+                        <input name="password" type="password" required="required" autocomplete="current-password">
+                        <span>Password</span>
+                    </div>
+                    <button type="submit" value="Register" class="enter">Submit</button>
+                    <span style="color: rgb(86, 86, 86);">Have a acc ?
+                        <a style="color: rgb(73, 73, 73); text-decoration: none;" href="/login">Login</a>
+                    </span>
+                </div>
+            </div>
+        </form>
+    </section>
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/template.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
+    <!-- <link rel="stylesheet" type="text/css" href="../static/css/template.css"> -->
+    <!-- <link rel="stylesheet" type="text/css" href="../static/css/login.css"> -->
+    <title>Login</title>
+</head>
+
+<body class="centered">
+    <section class="form">
+        <form method="POST" action="/login">
+            <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token }}">
+            <div class="container">
+                <div class="card" style="min-height: 450px;">
+                    <a class="login">Log in</a>
+                    <div class="inputBox">
+                        <input name="username" type="text" required="required" autocomplete="username">
+                        <span class="user">Username</span>
+                    </div>
+                    <div class="inputBox">
+                        <input name="password" type="password" required="required" autocomplete="current-password">
+                        <span>Password</span>
+                    </div>
+                    <button type="submit" value="Login" class="enter">Submit</button>
+                    <span style="color: rgb(86, 86, 86);">Dont have a acc ?
+                        <a style="color: rgb(73, 73, 73); text-decoration: none;" href="/register">Register</a>
+                    </span>
+                    <span><a style="color: rgb(70, 70, 70); text-decoration: none;" href="/reset_password">Forgot
+                            Password ?</a></span>
+                </div>
+            </div>
+        </form>
+    </section>
+</body>
+
+</html>

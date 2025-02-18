@@ -1,0 +1,31 @@
+
+# /user?username=admin
+
+# @app.route('/user', methods=['GET'])
+# def user():
+#     username = request.args.get('username')
+#     # return username
+#     if 'username' in session:
+#         # User is logged in, display their account page
+#         logged_in_username = session['username']
+
+#         if logged_in_username == 'admin':
+#             username = sanitize_input(username)
+#             liked_meals = get_liked_Meals_db(username)
+#             meal = [meal[2] for meal in liked_meals]
+            
+#             return jsonify({'likedMeals': meal,
+#                     'username': username})
+
+#         return 'Sorry only admins can access this page <a href="/">Home</a>'
+#     else:
+#         # User is not logged in, redirect to the login page
+#         return redirect(url_for('login'))
+
+
+OLD API ENDPOINTS
+
+
+
+/search_by_ingrediants
+seach using ingredients like there will be images of ingrediants the user will select the ingredients which they have and displays the relative recipies 
